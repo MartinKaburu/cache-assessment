@@ -12,7 +12,11 @@ gcloud artifacts repositories create cache-assessment-app \
 
 gcloud projects add-iam-policy-binding $PROJECT_ID \
   --member=serviceAccount:$PROJECT_NUMBER@cloudbuild.gserviceaccount.com \
-  --role=roles/artifactregistry.writer
+  --role=roles/artifactregistry.writer # For Artifact Registry access
+
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+  --member=serviceAccount:$PROJECT_NUMBER@cloudbuild.gserviceaccount.com \
+  --role=roles/container.developer # For GKE access
 
 # Create Triggers
 gcloud beta builds triggers create github \
