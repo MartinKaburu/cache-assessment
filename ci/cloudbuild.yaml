@@ -1,0 +1,28 @@
+steps:
+  # Step 1: Build Docker image
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', '${_IMAGE}', './app']
+
+  # Step 2: Push Docker image to Artifact Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', '${_IMAGE}']
+
+  # Step 3: Deploy to GKE using kubectl and kustomize
+  - name: 'gcr.io/cloud-builders/kubectl'
+    env:
+      - 'CLOUDSDK_COMPUTE_REGION=${_CLUSTER_REGION}'
+      - 'CLOUDSDK_CONTAINER_CLUSTER=${_CLUSTER_NAME}'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        kubectl kustomize k8s/overlays/${_ENV} | kubectl apply -f -
+
+
+substitutions:
+  _IMAGE: 'us-east1-docker.pkg.dev/$PROJECT_ID/cache-assessment-app:$SHORT_SHA-staging'
+  _CLUSTER_NAME: 'cache-assessment-cluster'
+  _CLUSTER_REGION: 'us-east1'
+  _ENV: 'staging'
+
+timeout: '900s'

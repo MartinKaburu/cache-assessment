@@ -2,7 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: cache-assessment-app
-  namespace: cache-staging
 spec:
   replicas: 4
   selector:
@@ -13,14 +12,24 @@ spec:
       labels:
         app: cache-assessment-app
     spec:
-      serviceAccountName: cache-ksa
+      serviceAccountName: PLACEHOLDER-SA
       containers:
       - name: cache-assessment-app
         image: martinkaburu/cache-assessment-app:latest
         ports:
         - containerPort: 8080
         envFrom:
-        - configMapRef:
-            name: app-config
         - secretRef:
-            name: app-secret
+            name: PLACEHOLDER-SECRETS
+        env:
+        - name: DB_CONNECTION_STRING 
+          valueFrom:
+            secretKeyRef:
+              name: db-credentials
+              key: DB_PASSWORD
+        env:
+        - name: PROJECT_ID
+          value: "martin-sandbox-272210"
+        env:
+        - name: PUBSUB_TOPIC
+          value: "cache-assessment-topic"
