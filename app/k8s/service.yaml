@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: cache-assessment-app-service
+  namespace: cache-staging
+spec:
+  type: ClusterIP
+  selector:
+    app: cache-assessment-app
+  ports:
+  - port: 80
+    targetPort: 8080

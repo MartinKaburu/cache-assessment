@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cache-assessment-app
+  namespace: cache-staging
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: cache-assessment-app
+  template:
+    metadata:
+      labels:
+        app: cache-assessment-app
+    spec:
+      serviceAccountName: cache-ksa
+      containers:
+      - name: cache-assessment-app
+        image: martinkaburu/cache-assessment-app:latest
+        ports:
+        - containerPort: 8080
+        envFrom:
+        - configMapRef:
+            name: app-config
+        - secretRef:
+            name: app-secret
