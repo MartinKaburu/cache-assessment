@@ -121,3 +121,4 @@ This document outlines the infrastructure setup and application deployment proce
 - Add **TLS encryption** for **ELK Stack**.
 - Implement **RBAC** for **Kibana** access.
 - Scale **Elasticsearch** to multiple nodes for production.
+- Refactor the codebase to have an `infra/environments/shared` module that houses all the shared resources like SQL and GKE
