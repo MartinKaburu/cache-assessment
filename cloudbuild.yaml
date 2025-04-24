@@ -18,6 +18,7 @@ steps:
       - |
         gcloud container clusters get-credentials $_CLUSTER_NAME --region=$_CLUSTER_REGION
         export SHORT_SHA=$(git rev-parse --short HEAD)
+        sed -i "s|newTag:.*|newTag: ${SHORT_SHA}-${_ENV}|" k8s/overlays/${_ENV}/kustomization.yaml
         kubectl apply -f k8s/base/namespace.yaml
         kubectl kustomize k8s/overlays/${_ENV} | kubectl apply -f -
 
