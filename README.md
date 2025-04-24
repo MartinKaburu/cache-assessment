@@ -15,6 +15,7 @@ This document outlines the infrastructure setup and application deployment proce
   - **Public Subnet**: Hosts the bastion instance.
   - **Private Subnet**: Hosts GKE and Cloud SQL.
   - **NAT Gateway**: Allows private subnet egress.
+  - **Bastion Instance**: Deployed in the public subnet. Accessed with `gcloud compute ssh debian@cache-net-bastion --zone=us-east1-b`
 - **Outputs**:
   - `network` (VPC self-link)
   - `public_subnet` (self-link)
@@ -25,7 +26,7 @@ This document outlines the infrastructure setup and application deployment proce
 - **Configuration**:
   - **Cluster Name**: Defined via variable.
   - **Subnetwork**: Uses the `private_subnet` from the VPC module.
-  - **Node Count**: Set to **4 nodes**.
+  - **Node Count**: Set to **6 nodes**. 2 Nodes per Zone.
 - **IAM**: Configured to use **Workload Identity** for secure pod-to-GCP interactions.
 
 #### 3. **Cloud SQL Module**
@@ -37,6 +38,8 @@ This document outlines the infrastructure setup and application deployment proce
 - **Outputs**:
   - **DB connection string**.
   - **Secret Manager references**.
+
+**NOTE: I would not share the same VPC, GKE or SQL Instance for prod and staging this is just for demonstration purposes.**
 
 #### 4. **Pub/Sub Module**
 - **Purpose**: Create a **Pub/Sub topic and subscription**.
@@ -118,5 +121,3 @@ This document outlines the infrastructure setup and application deployment proce
 - Add **TLS encryption** for **ELK Stack**.
 - Implement **RBAC** for **Kibana** access.
 - Scale **Elasticsearch** to multiple nodes for production.
-- Configure **Unique Bastion Keys** for all users and log all sessions.
-- Configure Prod infrastructure and deployment

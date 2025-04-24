@@ -14,7 +14,10 @@ helm repo update
 
 helm install elasticsearch elastic/elasticsearch \
   --namespace elastic-system \
-  --create-namespace \
+  --set resources.requests.cpu="200m" \
+  --set resources.requests.memory="500Mi" \
+  --set resources.limits.cpu="300m" \
+  --set resources.limits.memory="600Mi" \
   --set replicas=1 \
   --set minimumMasterNodes=1
 
