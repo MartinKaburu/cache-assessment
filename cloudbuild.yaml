@@ -22,6 +22,12 @@ steps:
         kubectl apply -f k8s/base/namespace.yaml
         kubectl kustomize k8s/overlays/${_ENV} | kubectl apply -f -
 
+        # Fix eso-ksa namespace
+        kubectl get sa ${_ENV}-eso-ksa -n cache-${_ENV} -o yaml | \
+        sed 's/namespace: cache-${_ENV}/namespace: external-secrets/' | \
+        kubectl apply -f -
+
+
 
 substitutions:
   _CLUSTER_NAME: 'cache-assessment-cluster'

@@ -32,25 +32,5 @@ patches:
     - op: replace
       path: /spec/data/0/remoteRef/key
       value: prod-db-password
-  
-- target:
-    kind: ServiceAccount
-    name: cache-ksa
-  patch: |-
-    - op: replace
-      path: /metadata/annotations/iam.gke.io~1gcp-service-account
-      value: cache-gsa@cache-assessment.iam.gserviceaccount.com
 
-- target:
-    kind: ServiceAccount
-    name: eso-ksa
-    namespace: external-secrets
-  patch: |-
-    - op: replace
-      path: /metadata/annotations/iam.gke.io~1gcp-service-account
-      value: eso-gsa@cache-assessment.iam.gserviceaccount.com
-    
-    - op: replace
-      path: /metadata/namespace
-      value: external-secrets
 
