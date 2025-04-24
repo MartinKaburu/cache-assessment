@@ -2,7 +2,7 @@ namespace: cache-prod
 namePrefix: prod-
 
 resources:
-  - ../base
+  - ../../base
 
 images:
   - name: martinkaburu/cache-assessment-app
