@@ -23,7 +23,6 @@ steps:
 
 
 substitutions:
-  _IMAGE: 'us-east1-docker.pkg.dev/cache-assessment/cache-assessment-app/cache-assessment-app:$SHORT_SHA-staging'
   _CLUSTER_NAME: 'cache-assessment-cluster'
   _CLUSTER_REGION: 'us-east1'
   _ENV: 'staging'
