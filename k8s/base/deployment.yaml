@@ -13,7 +13,7 @@ spec:
       labels:
         app: cache-assessment-app
     spec:
-      serviceAccountName: PLACEHOLDER-SA
+      serviceAccountName: placeholder-sa
       containers:
         - name: cache-assessment-app
           image: 'martinkaburu/cache-assessment-app:latest'
@@ -21,7 +21,7 @@ spec:
             - containerPort: 8080
           envFrom:
             - secretRef:
-                name: PLACEHOLDER-SECRET
+                name: placeholder-db-secret
           env:
             - name: DB_CONNECTION_STRING
               valueFrom:
