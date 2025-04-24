@@ -19,7 +19,7 @@ steps:
     args:
       - '-c'
       - |
-        gcloud container clusters get-credentials $CLOUDSDK_CONTAINER_CLUSTER --region=$CLOUDSDK_COMPUTE_REGION
+        gcloud container clusters get-credentials $_CLUSTER_NAME --region=$_CLUSTER_REGION
 
         kubectl kustomize k8s/overlays/${_ENV} | kubectl apply -f -
 
