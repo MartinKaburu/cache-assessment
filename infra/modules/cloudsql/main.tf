@@ -17,21 +17,29 @@ resource "google_sql_database" "db" {
   instance = google_sql_database_instance.postgres.name
 }
 
+resource "random_password" "db_password" {
+  length  = 16
+  special = false
+  upper   = true
+  lower   = true
+}
+
 resource "google_sql_user" "user" {
   name     = var.db_user
   instance = google_sql_database_instance.postgres.name
-  password = var.db_password
+  password = random_password.db_password.result
 }
 
 
 resource "google_secret_manager_secret" "db_password" {
-  secret_id  = "${var.env}-db-password"
+  secret_id = "${var.env}-db-password"
+
   replication {
-    automatic = true
+    auto {}
   }
 }
 
 resource "google_secret_manager_secret_version" "db_password_version" {
   secret      = google_secret_manager_secret.db_password.id
-  secret_data = "postgresql://${var.db_user}:${var.db_password}@${google_sql_database_instance.postgres.private_ip_address}:5432/${google_sql_database.db.name}"
+  secret_data = "postgresql://${var.db_user}:${random_password.db_password.result}@${google_sql_database_instance.postgres.private_ip_address}:5432/${google_sql_database.db.name}"
 }

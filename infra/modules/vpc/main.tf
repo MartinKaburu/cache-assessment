@@ -39,16 +39,40 @@ resource "google_compute_router_nat" "nat" {
   }
 }
 
-# Bastion host with SSH access to private subnet
-resource "tls_private_key" "bastion_key" {
-  algorithm = "RSA"
-  rsa_bits  = 4096
+# Reserve internal IP range and peer to servicenetworking.googleapis.com
+resource "google_compute_global_address" "private_service_range" {
+  name          = "google-managed-services"
+  purpose       = "VPC_PEERING"
+  address_type  = "INTERNAL"
+  prefix_length = 16
+  network       = google_compute_network.vpc.self_link
 }
 
+resource "google_service_networking_connection" "private_vpc_connection" {
+  network                 = google_compute_network.vpc.self_link
+  service                 = "servicenetworking.googleapis.com"
+  reserved_peering_ranges = [google_compute_global_address.private_service_range.name]
+}
+
+# Bastion host with SSH access to private subnet
+resource "google_compute_firewall" "bastion_ssh" {
+  name    = "bastion-allow-ssh"
+  network = google_compute_network.vpc.self_link
+
+  allow {
+    protocol = "tcp"
+    ports    = ["22"]
+  }
+
+  source_ranges = ["0.0.0.0/0"]
+  target_tags   = ["bastion"]
+}
+
+# Access with gcloud compute ssh debian@cache-net-bastion --zone=us-east1-b
 resource "google_compute_instance" "bastion" {
   name         = "${var.network_name}-bastion"
   machine_type = "e2-micro"
-  zone         = "${var.region}-a"
+  zone         = "${var.region}-b"
 
   boot_disk {
     initialize_params {
@@ -59,10 +83,6 @@ resource "google_compute_instance" "bastion" {
   network_interface {
     subnetwork = google_compute_subnetwork.public_subnet.self_link
     access_config {}
-  }
-
-  metadata = {
-    ssh-keys = "admin:${tls_private_key.bastion_key.public_key_openssh}"
   }
 
   tags = ["bastion"]
