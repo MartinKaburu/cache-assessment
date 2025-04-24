@@ -68,7 +68,7 @@ resource "google_compute_firewall" "bastion_ssh" {
   target_tags   = ["bastion"]
 }
 
-# Access with gcloud compute ssh debian@cache-net-bastion --zone=us-east1-b
+# Access with  -- gcloud compute ssh debian@cache-net-bastion --zone=us-east1-b
 resource "google_compute_instance" "bastion" {
   name         = "${var.network_name}-bastion"
   machine_type = "e2-micro"

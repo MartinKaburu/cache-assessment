@@ -10,6 +10,8 @@ resource "google_sql_database_instance" "postgres" {
       private_network = var.network
     }
   }
+
+  deletion_protection = false
 }
 
 resource "google_sql_database" "staging_db" {

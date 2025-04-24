@@ -24,6 +24,10 @@ patches:
     - op: replace
       path: /spec/template/spec/containers/0/env/0/valueFrom/secretKeyRef/name
       value: prod-db-credentials
+    
+    - op: replace
+      path: /spec/template/spec/containers/0/env/2/value
+      value: projects/cache-assessment/topics/prod-cache-assessment-topic
   
 - target:
     kind: ExternalSecret

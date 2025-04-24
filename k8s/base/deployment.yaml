@@ -28,4 +28,4 @@ spec:
             - name: PROJECT_ID
               value: cache-assessment
             - name: PUBSUB_TOPIC
-              value: projects/cache-assessment/topics/cache-assessment-topic
+              value: projects/cache-assessment/topics/staging-cache-assessment-topic
