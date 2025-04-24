@@ -25,3 +25,14 @@ patches:
     - op: replace
       path: /spec/template/spec/containers/0/env/0/valueFrom/secretKeyRef/name
       value: staging-db-secrets
+- target:
+    kind: ExternalSecret
+    name: db-secrets
+  patch: |-
+    - op: replace
+      path: /spec/data/0/remoteRef/key
+      value: staging-db-password
+    
+    - op: replace
+      path: /spec/secretStoreRef/name
+      value: staging-gcp-secretstore

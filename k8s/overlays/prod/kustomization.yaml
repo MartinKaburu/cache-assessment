@@ -15,7 +15,7 @@ images:
 patches:
 - target:
     kind: Deployment
-    name: prod-cache-assessment-app
+    name: cache-assessment-app
   patch: |-
     - op: replace
       path: /spec/template/spec/serviceAccountName
@@ -27,10 +27,14 @@ patches:
   
 - target:
     kind: ExternalSecret
-    name: prod-db-secrets
+    name: db-secrets
   patch: |-
     - op: replace
       path: /spec/data/0/remoteRef/key
       value: prod-db-password
+    
+    - op: replace
+      path: /spec/secretStoreRef/name
+      value: prod-gcp-secretstore
 
 
