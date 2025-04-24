@@ -1,0 +1,42 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: cache-staging
+
+namePrefix: staging-
+
+resources:
+- ../../base
+
+images:
+- name: martinkaburu/cache-assessment-app
+  newName: us-east1-docker.pkg.dev/cache-assessment/cache-assessment-app/cache-assessment-app
+  newTag: placeholder
+
+patches:
+- target:
+    kind: Deployment
+    name: cache-assessment-app
+  patch: |-
+    - op: replace
+      path: /spec/template/spec/serviceAccountName
+      value: staging-cache-ksa
+    
+    - op: replace
+      path: /spec/template/spec/containers/0/env/0/valueFrom/secretKeyRef/name
+      value: staging-db-credentials
+- target:
+    kind: ExternalSecret
+    name: db-secrets
+  patch: |-
+    - op: replace
+      path: /spec/data/0/remoteRef/key
+      value: staging-db-password
+    
+    - op: replace
+      path: /spec/secretStoreRef/name
+      value: staging-gcp-secretstore
+    
+    - op: replace
+      path: /spec/target/name
+      value: staging-db-credentials
