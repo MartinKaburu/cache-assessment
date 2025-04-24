@@ -1,3 +1,6 @@
+options:
+  logging: CLOUD_LOGGING_ONLY
+
 steps:
   # Step 1: Build Docker image
   - name: 'gcr.io/cloud-builders/docker'
@@ -20,7 +23,7 @@ steps:
 
 
 substitutions:
-  _IMAGE: 'us-east1-docker.pkg.dev/$PROJECT_ID/cache-assessment-app:$SHORT_SHA-staging'
+  _IMAGE: 'us-east1-docker.pkg.dev/cache-assessment/cache-assessment-app/cache-assessment-app:$SHORT_SHA-staging'
   _CLUSTER_NAME: 'cache-assessment-cluster'
   _CLUSTER_REGION: 'us-east1'
   _ENV: 'staging'
