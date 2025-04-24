@@ -23,7 +23,7 @@ patches:
 
     - op: replace
       path: /spec/template/spec/containers/0/env/0/valueFrom/secretKeyRef/name
-      value: prod-db-secrets
+      value: prod-db-credentials
   
 - target:
     kind: ExternalSecret
@@ -36,5 +36,9 @@ patches:
     - op: replace
       path: /spec/secretStoreRef/name
       value: prod-gcp-secretstore
+    
+    - op: replace
+      path: /spec/target/name
+      value: prod-db-credentials
 
 

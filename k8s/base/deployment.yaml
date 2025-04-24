@@ -23,7 +23,7 @@ spec:
             - name: DB_CONNECTION_STRING
               valueFrom:
                 secretKeyRef:
-                  name: placeholder
+                  name: db-credentials
                   key: DB_PASSWORD
             - name: PROJECT_ID
               value: cache-assessment
