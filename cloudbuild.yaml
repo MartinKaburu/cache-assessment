@@ -4,11 +4,11 @@ options:
 steps:
   # Step 1: Build Docker image
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'us-east1-docker.pkg.dev/cache-assessment/cache-assessment-repo/cache-assessment-app:$SHORT_SHA-$_ENV', './app']
+    args: ['build', '-t', 'us-east1-docker.pkg.dev/cache-assessment/cache-assessment-app/cache-assessment-app:$SHORT_SHA-$_ENV', './app']
 
   # Step 2: Push Docker image to Artifact Registry
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'us-east1-docker.pkg.dev/cache-assessment/cache-assessment-repo/cache-assessment-app:$SHORT_SHA-$_ENV']
+    args: ['push', 'us-east1-docker.pkg.dev/cache-assessment/cache-assessment-app/cache-assessment-app:$SHORT_SHA-$_ENV']
 
   # Step 3: Deploy to GKE using kubectl and kustomize
   - name: 'gcr.io/cloud-builders/kubectl'
