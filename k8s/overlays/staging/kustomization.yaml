@@ -9,6 +9,8 @@ images:
     newName: us-east1-docker.pkg.dev/cache-assessment/cache-assessment-app/cache-assessment-app
     newTag: $SHORT_SHA-staging
 
+patchesStrategicMerge:
+  - patch-eso-ksa-ns.yaml
 
 patches:
   - target:

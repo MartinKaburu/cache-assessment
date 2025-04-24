@@ -6,7 +6,7 @@ helm install external-secrets external-secrets/external-secrets \
   --namespace external-secrets \
   --create-namespace \
   --set serviceAccount.create=false \
-  --set serviceAccount.name=eso-ksa
+  --set serviceAccount.name=staging-eso-ksa
 
 # Install ELK Stack
 helm repo add elastic https://helm.elastic.co

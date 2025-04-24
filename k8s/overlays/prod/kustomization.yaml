@@ -8,7 +8,10 @@ images:
   - name: martinkaburu/cache-assessment-app
     newName: us-east1-docker.pkg.dev/cache-assessment/cache-assessment-app/cache-assessment-app
     newTag: $SHORT_SHA-prod
-  
+
+patchesStrategicMerge:
+  - patch-eso-ksa-ns.yaml
+
 patches:
   - target:
         kind: Deployment

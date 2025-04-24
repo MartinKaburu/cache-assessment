@@ -40,7 +40,7 @@ gcloud beta builds triggers create github \
   --repo-owner="martinkaburu" \
   --branch-pattern="^dev$" \
   --build-config="cloudbuild.yaml" \
-  --substitutions=_CLUSTER_NAME=cache-assessment-cluster,_CLUSTER_REGION=us-east1,_ENV=staging,_IMAGE=us-east1-docker.pkg.dev/cache/cache-assessment-app:$SHORT_SHA-staging
+  --substitutions=_CLUSTER_NAME=cache-assessment-cluster,_CLUSTER_REGION=us-east1,_ENV=staging,_IMAGE=us-east1-docker.pkg.dev/cache-assessment/cache-assessment-app:$SHORT_SHA-staging
 
 
 gcloud beta builds triggers create github \
