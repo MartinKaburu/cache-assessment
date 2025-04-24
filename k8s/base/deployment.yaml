@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cache-assessment-app
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: cache-assessment-app
+  template:
+    metadata:
+      labels:
+        app: cache-assessment-app
+    spec:
+      serviceAccountName: PLACEHOLDER-SA
+      containers:
+      - name: cache-assessment-app
+        image: martinkaburu/cache-assessment-app:latest
+        ports:
+        - containerPort: 8080
+        envFrom:
+        - secretRef:
+            name: PLACEHOLDER-SECRETS
+        env:
+        - name: DB_CONNECTION_STRING 
+          valueFrom:
+            secretKeyRef:
+              name: db-credentials
+              key: DB_PASSWORD
+        env:
+        - name: PROJECT_ID
+          value: "cache-assessment"
+        env:
+        - name: PUBSUB_TOPIC
+          value: "cache-assessment-topic"

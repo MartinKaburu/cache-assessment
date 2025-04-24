@@ -1,0 +1,26 @@
+namespace: cache-staging
+namePrefix: staging-
+
+resources:
+  - ../base
+
+images:
+  - name: martinkaburu/cache-assessment-app
+    newName: us-east1-docker.pkg.dev/cache-assessment/cache-assessment-app/cache-assessment-app
+    newTag: $SHORT_SHA-staging
+
+
+patches:
+  - target:
+      kind: Deployment
+      name: staging-cache-assessment-app
+    patch: |-
+      - op: replace
+        path: /spec/template/spec/serviceAccountName
+        value: staging-cache-ksa
+      - op: replace
+        path: /spec/template/spec/containers/0/envFrom/0/secretRef/name
+        value: staging-db-secrets
+      - op: replace
+        path: /spec/template/spec/containers/0/env/0/valueFrom/secretKeyRef/name
+        value: staging-db-secrets

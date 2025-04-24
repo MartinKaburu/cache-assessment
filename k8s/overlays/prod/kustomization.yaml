@@ -1,0 +1,50 @@
+namespace: cache-prod
+namePrefix: prod-
+
+resources:
+  - ../base
+
+images:
+  - name: martinkaburu/cache-assessment-app
+    newName: us-east1-docker.pkg.dev/cache-assessment/cache-assessment-app/cache-assessment-app
+    newTag: $SHORT_SHA-prod
+  
+patches:
+  - target:
+        kind: Deployment
+        name: prod-cache-assessment-app
+    patch: |-
+      - op: replace
+        path: /spec/template/spec/serviceAccountName
+        value: prod-cache-ksa
+      - op: replace
+        path: /spec/template/spec/containers/0/envFrom/0/secretRef/name
+        value: prod-db-secrets
+      - op: replace
+        path: /spec/template/spec/containers/0/env/0/valueFrom/secretKeyRef/name
+        value: prod-db-secrets
+
+  - target:
+      kind: ExternalSecret
+      name: prod-db-secrets
+    patch: |-
+      - op: replace
+        path: /spec/data/0/remoteRef/key
+        value: prod-db-password
+  
+  - target:
+      kind: ServiceAccount
+      name: prod-cache-ksa
+    patch: |-
+      - op: replace
+        path: /metadata/annotations/iam.gke.io~1gcp-service-account
+        value: cache-gsa@cache-assessment.iam.gserviceaccount.com
+  
+  - target:
+      kind: ServiceAccount
+      name: prod-eso-ksa
+      namespace: external-secrets
+    patch: |-
+      - op: replace
+        path: /metadata/annotations/iam.gke.io~1gcp-service-account
+        value: eso-gsa@cache-assessment.iam.gserviceaccount.com
