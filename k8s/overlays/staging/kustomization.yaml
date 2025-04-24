@@ -24,7 +24,7 @@ patches:
     
     - op: replace
       path: /spec/template/spec/containers/0/env/0/valueFrom/secretKeyRef/name
-      value: staging-db-secrets
+      value: staging-db-credentials
 - target:
     kind: ExternalSecret
     name: db-secrets
