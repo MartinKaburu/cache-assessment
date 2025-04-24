@@ -4,13 +4,10 @@ variable "region" {}
 
 variable "network" {}
 
-variable "db_name" {}
+variable "staging_db_name" {}
 
-variable "db_user" {}
+variable "staging_db_user" {}
 
-variable "env" {}
+variable "prod_db_name" {}
 
-variable "db_password" {
-    description = "Sensitive DB password"
-    sensitive   = true
-}
+variable "prod_db_user" {}

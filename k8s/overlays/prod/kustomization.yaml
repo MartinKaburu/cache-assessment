@@ -41,4 +41,11 @@ patches:
       path: /spec/target/name
       value: prod-db-credentials
 
+- target:
+    kind: ServiceAccount
+    name: cache-ksa
+  patch: |-
+    - op: replace
+      path: /metadata/annotations/iam.gke.io~1gcp-service-account
+      value: prod-cache-gsa@cache-assessment.iam.gserviceaccount.com
 

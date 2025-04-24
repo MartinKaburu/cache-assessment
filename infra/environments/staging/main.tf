@@ -15,7 +15,7 @@ module "gke" {
   project_id   = var.project_id
   network      = module.vpc.network
   subnetwork   = module.vpc.private_subnet
-  node_count   = 1
+  node_count   = 2
 
   depends_on = [module.vpc]
 }
@@ -23,13 +23,13 @@ module "gke" {
 # --- Cloud SQL in private network ---
 module "cloudsql" {
   source        = "../../modules/cloudsql"
-  instance_name = "staging-postgres"
+  instance_name = "cache-postgres"
   region        = var.region
   network       = module.vpc.network
-  db_name       = "cache_db"
-  db_password   = var.db_password
-  db_user       = var.db_user
-  env           = "staging"
+  staging_db_name    = var.staging_db_name
+  staging_db_user    = var.staging_db_user
+  prod_db_name       = var.prod_db_name
+  prod_db_user       = var.prod_db_user
 
   depends_on = [module.vpc]
 }
@@ -37,13 +37,13 @@ module "cloudsql" {
 # --- Pub/Sub ---
 module "pubsub" {
   source            = "../../modules/pubsub"
-  topic_name        = "cache-assessment-topic"
-  subscription_name = "cache-assessment-subscription"
+  topic_name        = "staging-cache-assessment-topic"
+  subscription_name = "staging-cache-assessment-subscription"
 }
 
 # --- Cache App Service Account ---
 resource "google_service_account" "gke_app" {
-  account_id   = "cache-gsa"
+  account_id   = "staging-cache-gsa"
   display_name = "Service Account for cache app to access Pub/Sub"
 
   depends_on = [module.gke]

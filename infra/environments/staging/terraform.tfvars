@@ -1,4 +1,6 @@
 project_id   = "cache-assessment"
 region       = "us-east1"
-db_user      = "cache_user"
-db_password  = "ABRoj9SZ3358LpxPXyNaEg=="
+staging_db_user      = "staging_cache_user"
+staging_db_name      = "staging_cache_db"
+prod_db_user      = "prod_cache_user"
+prod_db_name      = "prod_cache_db"

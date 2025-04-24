@@ -1,18 +1,16 @@
 variable "project_id" {
-  description = "GCP project ID"
-  type        = string
-  default     = "cache-assessment"
+  default = "cache-assessment"
 }
 
 variable "region" {
   default = "us-east1"
 }
 
-variable "db_user" {
-  default = "app_user"
-}
+variable "staging_db_user" {}
 
-variable "db_password" {
-  description = "Sensitive DB password"
-  sensitive = true
-}
+variable "staging_db_name" {}
+
+variable "prod_db_user" {}
+
+variable "prod_db_name" {}
+

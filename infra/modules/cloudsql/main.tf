@@ -12,34 +12,65 @@ resource "google_sql_database_instance" "postgres" {
   }
 }
 
-resource "google_sql_database" "db" {
-  name     = var.db_name
+resource "google_sql_database" "staging_db" {
+  name     = var.staging_db_name
   instance = google_sql_database_instance.postgres.name
 }
 
-resource "random_password" "db_password" {
+resource "random_password" "staging_db_password" {
   length  = 16
   special = false
   upper   = true
   lower   = true
 }
 
-resource "google_sql_user" "user" {
-  name     = var.db_user
+resource "google_sql_user" "staging_user" {
+  name     = var.staging_db_user
   instance = google_sql_database_instance.postgres.name
-  password = random_password.db_password.result
+  password = random_password.staging_db_password.result
+}
+
+resource "google_sql_database" "prod_db" {
+  name     = var.prod_db_name
+  instance = google_sql_database_instance.postgres.name
+}
+
+resource "random_password" "prod_db_password" {
+  length  = 16
+  special = false
+  upper   = true
+  lower   = true
+}
+
+resource "google_sql_user" "prod_user" {
+  name     = var.prod_db_user
+  instance = google_sql_database_instance.postgres.name
+  password = random_password.prod_db_password.result
 }
 
 
-resource "google_secret_manager_secret" "db_password" {
-  secret_id = "${var.env}-db-password"
+resource "google_secret_manager_secret" "staging_db_password" {
+  secret_id = "staging-db-password"
 
   replication {
     auto {}
   }
 }
 
-resource "google_secret_manager_secret_version" "db_password_version" {
-  secret      = google_secret_manager_secret.db_password.id
-  secret_data = "postgresql://${var.db_user}:${random_password.db_password.result}@${google_sql_database_instance.postgres.private_ip_address}:5432/${google_sql_database.db.name}"
+resource "google_secret_manager_secret_version" "staging_db_password_version" {
+  secret      = google_secret_manager_secret.prod_db_password.id
+  secret_data = "postgresql://${var.staging_db_user}:${random_password.staging_db_password.result}@${google_sql_database_instance.postgres.private_ip_address}:5432/${google_sql_database.staging_db.name}"
+}
+
+resource "google_secret_manager_secret" "prod_db_password" {
+  secret_id = "prod-db-password"
+
+  replication {
+    auto {}
+  }
+}
+
+resource "google_secret_manager_secret_version" "prod_db_password_version" {
+  secret      = google_secret_manager_secret.prod_db_password.id
+  secret_data = "postgresql://${var.prod_db_user}:${random_password.prod_db_password.result}@${google_sql_database_instance.postgres.private_ip_address}:5432/${google_sql_database.prod_db.name}"
 }

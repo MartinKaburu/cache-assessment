@@ -9,12 +9,3 @@ output "private_subnet" {
 output "network" {
   value = google_compute_network.vpc.self_link
 }
-
-output "bastion_ssh_private_key" {
-  value     = tls_private_key.bastion_key.private_key_pem
-  sensitive = true
-}
-
-output "bastion_external_ip" {
-  value = google_compute_instance.bastion.network_interface[0].access_config[0].nat_ip
-}
