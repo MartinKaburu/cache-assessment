@@ -12,15 +12,13 @@ steps:
 
   # Step 3: Deploy to GKE using kubectl and kustomize
   - name: 'gcr.io/cloud-builders/kubectl'
-    env:
-      - 'CLOUDSDK_COMPUTE_REGION=${_CLUSTER_REGION}'
-      - 'CLOUDSDK_CONTAINER_CLUSTER=${_CLUSTER_NAME}'
     entrypoint: 'bash'
     args:
       - '-c'
       - |
         gcloud container clusters get-credentials $_CLUSTER_NAME --region=$_CLUSTER_REGION
-
+        
+        kubectl apply -f k8s/base/namespace.yaml
         kubectl kustomize k8s/overlays/${_ENV} | kubectl apply -f -
 
 
