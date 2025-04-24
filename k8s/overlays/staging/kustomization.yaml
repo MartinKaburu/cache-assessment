@@ -13,18 +13,22 @@ images:
   newTag: placeholder
 
 patches:
-- patch: |-
+- target:
+    kind: Deployment
+    name: cache-assessment-app
+  patch: |-
     - op: replace
       path: /spec/template/spec/serviceAccountName
       value: staging-cache-ksa
-    - op: replace
-      path: /spec/template/spec/containers/0/envFrom/0/secretRef/name
-      value: staging-db-secrets
+    
     - op: replace
       path: /spec/template/spec/containers/0/env/0/valueFrom/secretKeyRef/name
       value: staging-db-secrets
-  target:
-    kind: Deployment
-    name: staging-cache-assessment-app
-- path: patch-eso-ksa-ns.yaml
-
+  
+- target:
+    kind: ServiceAccount
+    name: eso-ksa
+  patch: |-
+    - op: replace
+      path: /metadata/namespace
+      value: external-secrets

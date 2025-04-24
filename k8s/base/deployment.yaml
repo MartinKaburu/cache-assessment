@@ -19,14 +19,11 @@ spec:
           image: 'martinkaburu/cache-assessment-app:latest'
           ports:
             - containerPort: 8080
-          envFrom:
-            - secretRef:
-                name: placeholder-db-secret
           env:
             - name: DB_CONNECTION_STRING
               valueFrom:
                 secretKeyRef:
-                  name: db-credentials
+                  name: placeholder
                   key: DB_PASSWORD
             - name: PROJECT_ID
               value: cache-assessment
